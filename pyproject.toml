@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "amosutils"
+version = "0.0.1"
+description = ""
+authors = ["Martin Baláž <martin.balaz@fmph.uniba.sk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+numpy = "*"
+scipy = "*"
+pyyaml = "*"
+dotmap = "*"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
