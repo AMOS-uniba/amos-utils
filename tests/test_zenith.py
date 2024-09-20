@@ -2,8 +2,8 @@ import pytest
 import math
 import numpy as np
 
-from .base import pytest_generate_tests, TestProjection
-from projections.zenith import ZenithShifter
+from tests.base import pytest_generate_tests, TestProjection
+from amosutils.projections.zenith import ZenithShifter
 
 
 @pytest.fixture

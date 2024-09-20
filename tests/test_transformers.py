@@ -1,6 +1,6 @@
 import pytest
 
-from projections.transformers import LinearTransformer, ExponentialTransformer, BiexponentialTransformer
+from amosutils.projections.transformers import LinearTransformer, ExponentialTransformer, BiexponentialTransformer
 
 
 @pytest.fixture
