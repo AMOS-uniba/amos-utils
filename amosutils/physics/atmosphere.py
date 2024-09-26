@@ -25,8 +25,8 @@ class AirMass:
 
     def attenuate(flux: u.Quantity,
                   air_mass: u.Quantity,
-                  one: float = constants.AttenuationOneAirMass):
-        return np.where(air_mass <= 100, flux * np.exp(one * air_mass), 0)
+                  one: float = constants.AttenuationOneAirMassMag):
+        return np.where(air_mass <= 100, flux * np.exp(-np.log(100) / 5 * one * air_mass), 0)
 
 
 class AirDensity:

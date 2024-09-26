@@ -33,7 +33,7 @@ class TestAtmosphere:
     def test_attenuate(self):
         appmag = AirMass.attenuate(1 * u.mag, 5)
         assert appmag.unit == u.mag
-        assert appmag.value == pytest.approx(2.5)
+        assert appmag.value == pytest.approx(0.27542287, rel=1e-5)
 
 
 #    def testAttenuate_1_1(self):
