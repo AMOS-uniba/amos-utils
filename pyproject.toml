@@ -11,6 +11,8 @@ numpy = "*"
 scipy = "*"
 pyyaml = "*"
 dotmap = "*"
+pandas = "*"
+astropy = "*"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.2.0"
