@@ -23,6 +23,9 @@ class Catalogue:
         altaz = AltAz(location=location, obstime=time, pressure=100000 * u.pascal, obswl=550 * u.nm)
         return self.skycoord.transform_to(altaz)
 
+    def magnitudes(self):
+        return self.df.vmag
+
 
     def add_planets(self, location: EarthLocation, time: Time = None):
         if time is None:

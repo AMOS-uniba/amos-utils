@@ -104,8 +104,11 @@ class TestBorovickaProjection(TestProjection):
     def test_identity_north(self, boro_identity):
         assert boro_identity(1, 0) == pytest.approx((0.25 * math.tau, 0), abs=1e-14)
 
-    def test_identity_somewhere(self, boro_identity):
+    def test_identity_somewhere1(self, boro_identity):
         assert boro_identity(0.5, -0.5) == pytest.approx((np.sqrt(2) / 8 * math.tau, math.tau * 0.875), abs=1e-14)
+
+    def test_identity_somewhere2(self, boro_identity):
+        assert boro_identity(0.5, 0.5) == pytest.approx((np.sqrt(2) / 8 * math.tau, math.tau * 0.125), abs=1e-14)
 
     def test_identity_invert(self, boro_identity, x, y):
         assert boro_identity.invert(*boro_identity(x, y)) == pytest.approx((x, y), abs=1e-9)

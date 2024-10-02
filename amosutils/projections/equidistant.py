@@ -12,7 +12,7 @@ class EquidistantProjection(Projection):
 
     def __call__(self, x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         z = np.sqrt(np.square(x) + np.square(y))
-        a = np.arctan2(y, x)
+        a = np.arctan2(x, -y)
         return z, a
 
     def invert(self, z: np.ndarray, a: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:

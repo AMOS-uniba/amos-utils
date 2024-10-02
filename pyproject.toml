@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "amosutils"
-version = "0.0.1"
+version = "0.1.2"
 description = ""
 authors = ["Martin Baláž <martin.balaz@fmph.uniba.sk>"]
 readme = "README.md"

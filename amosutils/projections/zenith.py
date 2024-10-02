@@ -1,6 +1,8 @@
 import math
 import numpy as np
 
+from typing import Any
+
 from .base import Projection
 
 
@@ -39,7 +41,7 @@ class ZenithShifter(Projection):
 
         return z, np.mod(a, math.tau)  # wrap around to [0, 2pi)
 
-    def invert(self, z, a):
+    def invert(self, z: np.ndarray[float], a: np.ndarray[float]) -> tuple[np.ndarray[float], np.ndarray[float]]:
         if abs(self.epsilon) < 1e-14:
             u = z
             b = a - self.E
@@ -52,10 +54,10 @@ class ZenithShifter(Projection):
 
         return u, np.mod(b, math.tau)  # wrap around to [0, 2pi)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<{self.__class__.__name__} epsilon={self.epsilon} E={self.E}>"
 
-    def as_dict(self):
+    def as_dict(self) -> dict[str, float]:
         return dict(
             epsilon=float(self.epsilon),
             E=float(self.E),

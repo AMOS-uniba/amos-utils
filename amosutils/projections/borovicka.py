@@ -46,7 +46,7 @@ class BorovickaProjection(Projection):
         z, a = self.zenith_shifter(u, b)
         return z, a
 
-    def invert(self, z: np.ndarray, a: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def invert(self, z: np.ndarray[float], a: np.ndarray[float]) -> Tuple[np.ndarray[float], np.ndarray[float]]:
         u, b = self.zenith_shifter.invert(z, a)
         r = self.radial_transform.invert(u)
         x, y = self.axis_shifter.invert(r, b)
