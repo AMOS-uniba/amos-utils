@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import scipy as sp
+import numpy.typing as npt
 
 
 class ScalingShifter:
@@ -52,11 +53,15 @@ class OpticalAxisShifter:
 
 
 class TiltShifter(OpticalAxisShifter):
-    """ Extends OpticalAxisShifter with imaging plane tilt """
+    """
+        Extends OpticalAxisShifter with imaging plane tilt.
+        The optical axis is tilted with respect to the sensor normal at angle A in azimuth F.
+        For further details see Borovička (1995): A new positional astrometric method for all-sky cameras.
+    """
     def __init__(self, *, x0: float = 0, y0: float = 0, a0: float = 0, A: float = 0, F: float = 0, E: float = 0):
         super().__init__(x0=x0, y0=y0, a0=a0, E=E)
-        self.A = A                  # tilt stretch, amplitude
-        self.F = F                  # tilt stretch, phase
+        self.A = A                  # imaging plane tilt, amplitude
+        self.F = F                  # imaging plane tilt, phase
         self.cos_term = np.cos(self.F - self.a0)
         self.sin_term = np.sin(self.F - self.a0)
 
@@ -65,7 +70,7 @@ class TiltShifter(OpticalAxisShifter):
         r += self.A * ((y - self.y0) * self.cos_term - (x - self.x0) * self.sin_term)
         return r, b
 
-    def _jacobian(self, vec, r, b) -> np.ndarray[float]:
+    def _jacobian(self, vec, r, b) -> npt.NDArray:
         """ Jacobian for the numerical inversion method """
         xs = vec[0] - self.x0
         ys = vec[1] - self.y0
@@ -79,12 +84,11 @@ class TiltShifter(OpticalAxisShifter):
             [dbdx, dbdy],
         ])
 
-    def _func(self, vec, r: np.ndarray[float], b: np.ndarray[float]) -> np.ndarray[float]:
+    def _func(self, vec, r: np.ndarray[float], b: np.ndarray[float]) -> (np.ndarray[float], np.ndarray[float]):
         q = self.__call__(vec[0], vec[1])
-        err = q[0] - r, np.mod(q[1] - b + math.pi, math.tau) - math.pi
-        return err
+        return q[0] - r, np.mod(q[1] - b + math.pi, math.tau) - math.pi
 
-    def invert(self, r: np.ndarray[float], b: np.ndarray[float]) -> tuple[np.ndarray[float], np.ndarray[float]]:
+    def invert(self, r: np.ndarray[float], b: np.ndarray[float]) -> (np.ndarray[float], np.ndarray[float]):
         vec = sp.optimize.root(
             self._func,
             np.stack(super().invert(r, b)),
