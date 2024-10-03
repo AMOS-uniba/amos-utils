@@ -21,15 +21,15 @@ class Catalogue:
         if time is None:
             time = Time(datetime.datetime.now(tz=datetime.UTC))
 
-        earth = get_body('earth', time)
+        sun = get_body('sun', time=time, location=location)
+
+        planets = pd.DataFrame(columns=self.stars.columns)
 
         index = len(self.stars)
-        planets = pd.DataFrame(columns=['ra', 'dec', 'dist', 'vmag', 'absmag'])
-
         for name in ['mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune']:
             body = get_body(name, time=time, location=location)
             sundist = body.hcrs.distance
-            phase = earth.hcrs.separation(body.hcrs)
+            phase = body.separation(sun)
             planets = pd.concat([planets, pd.DataFrame(
                 data=[
                     [
@@ -40,9 +40,11 @@ class Catalogue:
                         -10
                     ]
                 ],
+                columns=self.stars.columns,
                 index=[index])])
             index += 1
 
+        self.planets = planets
         self.planets_skycoord = SkyCoord(planets.ra.to_numpy() * u.deg,
                                          planets.dec.to_numpy() * u.deg,
                                          frame=FK5(equinox=Time('J2000')))
@@ -58,6 +60,10 @@ class Catalogue:
             return total.transform_to(altaz)
         else:
             return self.stars_skycoord.transform_to(altaz)
+
+    def vmag(self, location: EarthLocation, time: Time = None):
+        self.build_planets(location, time)
+        return pd.concat([self.stars, self.planets]).vmag
 
     @staticmethod
     def brightness(planet: str, distance_earth: float, distance_sun: float, phase: u.Quantity):

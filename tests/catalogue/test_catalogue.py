@@ -17,7 +17,7 @@ def ago():
     return EarthLocation(17.27 * u.deg, 48.37 * u.deg, 531 * u.m)
 
 @pytest.fixture
-def basic(hyg30, ago):
+def altaz(hyg30, ago):
     return hyg30.altaz(ago, Time(datetime.datetime(2024, 9, 25, 21, 56, 37, tzinfo=datetime.UTC)))
 
 
@@ -46,3 +46,7 @@ class TestCatalogue:
         pass
         #assert hyg30.vmag[5071] == pytest.approx(-2, abs=0.5)
 
+    def test_vmag(self, hyg30, ago):
+        vmag = hyg30.vmag(ago)
+        assert vmag.shape == (5075,)
+        assert vmag[0] == pytest.approx(-1.45, abs=0.05)
